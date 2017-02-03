@@ -1,4 +1,4 @@
-const $ = require('jquery');
+//const $ = require('jquery');
 
 const user = {
   data: [
@@ -14,17 +14,25 @@ const user = {
 user.clickHandler();
 // note: this wouldn't work if I used an arrow function
 
-$("button").click(user.clickHandler);
+const functionAssignedToVariable = user.clickHandler;
+functionAssignedToVariable();
+// this doesn't work because you're calling the new variable function within the global scope
+
+const functionAssignedToVariable = user.clickHandler.bind(user);
+functionAssignedToVariable();
+// this will work because you're binding the user object to the clickHandler function FOR LIFE
+
+//$("button").click(user.clickHandler);
 // this wouldn't work because when using this in a callback function,
 // the context is the function calling the callback (so no this.data)
 
-$("button").click(user.clickHandler.bind(user));
+//$("button").click(user.clickHandler.bind(user));
 // this binds the user context to the clickHandler callback function
 // QUESTION: wouldn't .apply() also have worked?
 
-// bind returns a function which will act like the original function but with 'this' predefined.
+// bind returns a function (but doesn't call it) which will act like the original function but with 'this' predefined.
 // It is usually used when you want to pass a function to an event handler or
-// some other async callback -- like I just did on like 21!
+// some other async callback -- like I just did on line 21
 
 // call and apply (very similar) will call a function immediately letting you
 // specify both the value of 'this' and any arguments the function will receive
